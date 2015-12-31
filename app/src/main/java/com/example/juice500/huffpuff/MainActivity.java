@@ -4,6 +4,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.ArrayList;
 
@@ -44,13 +49,17 @@ public class MainActivity extends AppCompatActivity {
             String imagePath = cursor.getString(column_index_data);
             String imageFolderName = cursor.getString(column_index_folder_name);
 
-            if(imageItems.size()<2) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                imageItems.add(new ImageItem(bitmap, imagePath, imageFolderName));
-            }
-
-            Log.d("ASDF",imagePath);
-
+            int THUMBSIZE = 64;
+            Glide.with(MainActivity.this).load(imagePath).asBitmap().into(new SimpleTarget<Bitmap>(THUMBSIZE, THUMBSIZE){
+                @Override
+                public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                    Log.d("ASDF", "DONE");
+                }
+            });
+            // Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imagePath), THUMBSIZE, THUMBSIZE);
+            // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            // imageItems.add(new ImageItem(bitmap, imagePath, imageFolderName));
+            Log.d("ASDF", imagePath);
         }
         return imageItems;
     }
