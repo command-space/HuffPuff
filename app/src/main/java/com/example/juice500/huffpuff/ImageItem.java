@@ -1,40 +1,36 @@
 package com.example.juice500.huffpuff;
 
-import android.graphics.Bitmap;
-
-/**
- * http://javatechig.com/android/android-gridview-example-building-image-gallery-in-android
- */
 public class ImageItem {
-    private Bitmap image;
-    private String title;
-    private String folderTitle;
+    private String name;
+    private String path;
+    private boolean isHuff;
 
-    public ImageItem(Bitmap image, String title, String folderTitle) {
-        super();
-        this.image = image;
-        this.title = title;
-        this.folderTitle = folderTitle;
-    }
-
-    public Bitmap getImage() {
-        return this.image;
-    }
-    public void setImage(Bitmap image) {
-        this.image = image;
+    ImageItem(String name, String path, boolean isHuff) {
+        this.name = name;
+        this.path = path;
+        this.isHuff = isHuff;
     }
 
-    public String getTitle() {
-        return this.title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
+    String getName() {
+        return this.name;
     }
 
-    public String getFolderTitle() {
-        return this.folderTitle;
+    String getPath() {
+        return this.path;
     }
-    public void setFolderTitle(String folderTitle) {
-        this.folderTitle = folderTitle;
+
+    boolean getIsHuff() {
+        return this.isHuff;
     }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    void setPath(String path) {
+        this.path = path;
+    }
+
+    void setIsHuff(boolean isHuff) { this.isHuff = isHuff; }
+
 }

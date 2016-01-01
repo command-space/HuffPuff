@@ -1,10 +1,8 @@
 package com.example.juice500.huffpuff;
 
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -29,8 +27,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SQLiteDatabase db = openOrCreateDatabase(AccessHuff.DATABASE_NAME, MODE_PRIVATE, null);
+        AccessHuff accessHuff = new AccessHuff(db);
+        ArrayList<ImageItem> imageItems = accessHuff.getFolderList();
+
         gridView = (GridView) findViewById(R.id.gridView);
-        gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, getImageList());
+        gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, imageItems);
         gridView.setAdapter(gridViewAdapter);
     }
 
