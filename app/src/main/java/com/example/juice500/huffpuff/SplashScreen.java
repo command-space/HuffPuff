@@ -16,6 +16,8 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                HuffDatabase huffDatabase = HuffDatabase.getInstance(SplashScreen.this);
+
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 SplashScreen.this.finish();
             }

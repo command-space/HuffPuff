@@ -6,41 +6,59 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 /**
  * Created by juice500 on 16. 1. 1.
  * Adapter for List View in MainActivity first fragment
  */
 
-public class ListViewAdapter extends ArrayAdapter {
+public class ListViewAdapter<T> extends ArrayAdapter<T> {
     private Context context;
+    private int layoutResourceId;
+    private ArrayList<T> data;
     private LayoutInflater inflater;
 
-    private String[] imageUrls;
-
-    public ListViewAdapter(Context context, String[] imageUrls) {
-        //super(context, R.layout.listview_item_image, imageUrls);
-        super(context,0,imageUrls);
-
+    public ListViewAdapter(Context context, int layoutResourceId, ArrayList<T> data) {
+        super(context, layoutResourceId, data);
         this.context = context;
-        this.imageUrls = imageUrls;
-
-        inflater = LayoutInflater.from(context);
+        this.layoutResourceId = layoutResourceId;
+        this.data = data;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (null == convertView) {
-        //    convertView = inflater.inflate(R.layout.listview_item_image, parent, false);
+        View row = convertView;
+        ViewHolder holder;
+
+        if (row == null) {
+            row = this.inflater.inflate(this.layoutResourceId, parent, false);
+            holder = new ViewHolder();
+            holder.imageTitle = (TextView) row.findViewById(R.id.text);
+            holder.image = (ImageView) row.findViewById(R.id.image);
+            row.setTag(holder);
+        } else {
+            holder = (ViewHolder) row.getTag();
         }
 
-        Glide
-                .with(context)
-                .load(imageUrls[position])
-                .into((ImageView) convertView);
+        T item = data.get(position);
 
-        return convertView;
+        if(item.getClass() == ImageItem.class) {
+            ImageItem imageItem = (ImageItem) item;
+            holder.imageTitle.setText(imageItem.getName());
+            Glide.with(this.context).load(imageItem.getPath()).into(holder.image);
+        }
+
+        return row;
+    }
+
+    static class ViewHolder {
+        TextView imageTitle;
+        ImageView image;
     }
 }
