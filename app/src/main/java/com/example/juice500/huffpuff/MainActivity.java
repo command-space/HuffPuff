@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ImageItem> imageItems = huffDatabase.getFolderList();
 
         gridView = (GridView) findViewById(R.id.gridView);
-        gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, imageItems);
+        gridViewAdapter = new GridViewAdapter<>(this, R.layout.grid_item, imageItems);
         gridView.setAdapter(gridViewAdapter);
     }
 
