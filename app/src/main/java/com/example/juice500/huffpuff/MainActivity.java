@@ -27,9 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SQLiteDatabase db = openOrCreateDatabase(AccessHuff.DATABASE_NAME, MODE_PRIVATE, null);
-        AccessHuff accessHuff = new AccessHuff(db);
-        ArrayList<ImageItem> imageItems = accessHuff.getFolderList();
+        HuffDatabase huffDatabase = HuffDatabase.getInstance(MainActivity.this);
+        ArrayList<ImageItem> imageItems = huffDatabase.getFolderList();
 
         gridView = (GridView) findViewById(R.id.gridView);
         gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, imageItems);

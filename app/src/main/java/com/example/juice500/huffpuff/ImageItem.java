@@ -3,9 +3,9 @@ package com.example.juice500.huffpuff;
 public class ImageItem {
     private String name;
     private String path;
-    private boolean isHuff;
+    private int isHuff;
 
-    ImageItem(String name, String path, boolean isHuff) {
+    ImageItem(String name, String path, int isHuff) {
         this.name = name;
         this.path = path;
         this.isHuff = isHuff;
@@ -19,7 +19,7 @@ public class ImageItem {
         return this.path;
     }
 
-    boolean getIsHuff() {
+    int getIsHuff() {
         return this.isHuff;
     }
 
@@ -31,6 +31,6 @@ public class ImageItem {
         this.path = path;
     }
 
-    void setIsHuff(boolean isHuff) { this.isHuff = isHuff; }
+    void setIsHuff(int isHuff) { this.isHuff = isHuff; }
 
 }
