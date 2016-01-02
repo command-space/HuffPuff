@@ -15,17 +15,17 @@ import java.util.ArrayList;
 /**
  * Modified from http://javatechig.com/android/android-gridview-example-building-image-gallery-in-android
  */
-public class GridViewAdapter extends ArrayAdapter {
+
+public class GridViewAdapter<T> extends ArrayAdapter<T> {
     private Context context;
     private int layoutResourceId;
-    private ArrayList data;
+    private ArrayList<T> data;
     private LayoutInflater inflater;
 
-    public GridViewAdapter(Context context, int layoutResourceId, ArrayList data) {
-        // TODO: data has to be String[] imageUrls
+    public GridViewAdapter(Context context, int layoutResourceId, ArrayList<T> data) {
         super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
         this.context = context;
+        this.layoutResourceId = layoutResourceId;
         this.data = data;
         this.inflater = LayoutInflater.from(context);
     }
@@ -45,9 +45,14 @@ public class GridViewAdapter extends ArrayAdapter {
             holder = (ViewHolder) row.getTag();
         }
 
-        ImageItem item = (ImageItem) data.get(position);
-        holder.imageTitle.setText(item.getName());
-        Glide.with(this.context).load(item.getPath()).into(holder.image);
+        T item = data.get(position);
+
+        if(item.getClass() == ImageItem.class) {
+            ImageItem imageItem = (ImageItem) item;
+            holder.imageTitle.setText(imageItem.getName());
+            Glide.with(this.context).load(imageItem.getPath()).into(holder.image);
+        }
+
         return row;
     }
 
