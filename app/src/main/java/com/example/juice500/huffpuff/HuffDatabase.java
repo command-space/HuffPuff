@@ -111,13 +111,14 @@ public class HuffDatabase extends SQLiteOpenHelper{
             contentValues.put("folderName", folderName);
             contentValues.put("isImageHuff", false);
             this.db.insert(IMAGE_TABLE_NAME, null, contentValues);
-        }
-        if(!isFolderInList(folderName)) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("folderName",folderName);
-            contentValues.put("imagePath", imagePath);
-            contentValues.put("huffedNumber", 0);
-            this.db.insert(DIRECTORY_TABLE_NAME, null, contentValues);
+
+            if (!isFolderInList(folderName)) {
+                contentValues = new ContentValues();
+                contentValues.put("folderName", folderName);
+                contentValues.put("imagePath", imagePath);
+                contentValues.put("huffedNumber", 0);
+                this.db.insert(DIRECTORY_TABLE_NAME, null, contentValues);
+            }
         }
     }
 
@@ -152,7 +153,6 @@ public class HuffDatabase extends SQLiteOpenHelper{
         contentValues.put("imagePath", imagePath);
         contentValues.put("huffedNumber", huffedNumber);
         this.db.insert(DIRECTORY_TABLE_NAME, null, contentValues);
-        //this.db.update(DIRECTORY_TABLE_NAME, contentValues, )
     }
 
 }
