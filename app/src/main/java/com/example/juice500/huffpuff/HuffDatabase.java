@@ -58,7 +58,6 @@ public class HuffDatabase extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     public ArrayList<ImageItem> getFolderList() {
@@ -73,6 +72,7 @@ public class HuffDatabase extends SQLiteOpenHelper{
                 imageItems.add(new ImageItem(folderName, imagePath, huffedNumber));
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return imageItems;
     }
 
@@ -88,20 +88,26 @@ public class HuffDatabase extends SQLiteOpenHelper{
                 imageItems.add(new ImageItem(imageName, imagePath, isImageHuff));
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return imageItems;
     }
 
     public boolean isImageInList(String imagePath) {
         Cursor cursor = this.db.rawQuery("SELECT * FROM " + IMAGE_TABLE_NAME + " WHERE imagePath='" + imagePath+"';", null);
         if(cursor.getCount()>1) Log.d(this.toString(), "Multiple image in "+IMAGE_TABLE_NAME);
-        return cursor.getCount() != 0;
+
+        boolean ret = cursor.getCount() != 0;
+        cursor.close();
+        return ret;
     }
 
     public boolean isFolderInList(String folderName) {
         Cursor cursor = this.db.rawQuery("SELECT * FROM " + DIRECTORY_TABLE_NAME + " WHERE folderName='" + folderName+"'", null);
         if(cursor.getCount()>1) Log.d(this.toString(), "Multiple folder in "+DIRECTORY_TABLE_NAME);
-        return cursor.getCount() != 0;
-    }
+
+        boolean ret = cursor.getCount() != 0;
+        cursor.close();
+        return ret;    }
 
     public void insertImage(String imageName, String imagePath, String folderName) {
         if(!isImageInList(imagePath)) {
@@ -124,12 +130,16 @@ public class HuffDatabase extends SQLiteOpenHelper{
 
     public void deleteImage(String deletedImagePath) {
         Cursor cursor = this.db.rawQuery("SELECT * FROM " + IMAGE_TABLE_NAME + " WHERE imagePath='" + deletedImagePath+"'", null);
-        if(cursor.getCount() == 0) return;
+        if(cursor.getCount() == 0) {
+            cursor.close();
+            return;
+        }
         if(cursor.getCount()>1) Log.d(this.toString(), "Multiple image in "+IMAGE_TABLE_NAME);
         cursor.moveToFirst();
         String folderName = cursor.getString(cursor.getColumnIndex("folderName"));
         boolean isImageHuff  = (cursor.getInt(cursor.getColumnIndex("isImageHuff")) == 1);
         this.db.delete(IMAGE_TABLE_NAME, "imagePath=?", new String[]{deletedImagePath});
+        cursor.close();
 
         cursor = this.db.rawQuery("SELECT * FROM " + DIRECTORY_TABLE_NAME + " WHERE folderName='" + folderName+"'", null);
         if(cursor.getCount()>1) Log.d(this.toString(), "Multiple folder in "+DIRECTORY_TABLE_NAME);
@@ -137,16 +147,21 @@ public class HuffDatabase extends SQLiteOpenHelper{
         String imagePath = cursor.getString(cursor.getColumnIndex("imagePath"));
         int huffedNumber = cursor.getInt(cursor.getColumnIndex("huffedNumber"));
         this.db.delete(DIRECTORY_TABLE_NAME, "folderName=?", new String[]{folderName});
+        cursor.close();
 
         // huffedNumber Update
         if(isImageHuff) huffedNumber--;
         // imagePath Update
         if(imagePath.equals(deletedImagePath)) {
             cursor = this.db.rawQuery("SELECT * FROM " + IMAGE_TABLE_NAME + " WHERE folderName='" + folderName+"'", null);
-            if(cursor.getCount() == 0) return;
+            if(cursor.getCount() == 0) {
+                cursor.close();
+                return;
+            }
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex("imagePath"));
         }
+        cursor.close();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("folderName", folderName);
