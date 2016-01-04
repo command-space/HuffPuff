@@ -78,7 +78,7 @@ public class HuffDatabase extends SQLiteOpenHelper{
 
     public ArrayList<ImageItem> getImageList(String folderName) {
         ArrayList<ImageItem> imageItems = new ArrayList<>();
-        Cursor cursor = this.db.rawQuery("SELECT * FROM " + IMAGE_TABLE_NAME + " WHERE imageFolderName='" + folderName+"'", null);
+        Cursor cursor = this.db.rawQuery("SELECT * FROM " + IMAGE_TABLE_NAME + " WHERE folderName='" + folderName+"'", null);
         if(cursor.getCount()>0) {
             cursor.moveToFirst();
             do {
