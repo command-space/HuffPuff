@@ -9,10 +9,10 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-    implements MainActivityFolderFragment.OnFragmentInteractionListener {
+    implements MainActivityFolderFragment.OnFragmentInteractionListener, MainActivityImageFragment.OnFragmentInteractionListener {
+    private ArrayList<ImageItem> folderItems;
     private ArrayList<ImageItem> imageItems;
     private HuffDatabase huffDatabase;
-    private android.support.v4.app.FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,16 +20,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         this.huffDatabase = HuffDatabase.getInstance(MainActivity.this);
-        this.imageItems = huffDatabase.getFolderList();
+        this.folderItems = this.huffDatabase.getFolderList();
 
-        MainActivityFolderFragment folderFragment = MainActivityFolderFragment.newInstance(imageItems);
-        this.fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        this.fragmentTransaction.add(R.id.fragment_container, folderFragment);
-        this.fragmentTransaction.commit();
+        MainActivityFolderFragment folderFragment = MainActivityFolderFragment.newInstance(this.folderItems);
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, folderFragment);
+        fragmentTransaction.commit();
     }
 
-    public void onFolderSelected(int position) {
-        Log.d("ASDF",String.valueOf(position));
+    public void onFolderSelected(String folderName) {
+        this.imageItems = this.huffDatabase.getImageList(folderName);
+        MainActivityImageFragment imageFragment = MainActivityImageFragment.newInstance(this.imageItems);
+
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.fade_out, android.R.anim.slide_in_left, android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.fragment_container, imageFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override

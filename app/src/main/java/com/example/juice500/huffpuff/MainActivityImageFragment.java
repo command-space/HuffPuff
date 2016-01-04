@@ -1,13 +1,14 @@
 package com.example.juice500.huffpuff;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import java.util.ArrayList;
 
@@ -15,26 +16,25 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MainActivityFolderFragment.OnFragmentInteractionListener} interface
+ * {@link MainActivityImageFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MainActivityFolderFragment#newInstance} factory method to
+ * Use the {@link MainActivityImageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainActivityFolderFragment extends ListFragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_LIST = "folderList";
-    private ArrayList<ImageItem> folderArrayList;
+public class MainActivityImageFragment extends Fragment {
+    private static final String ARG_LIST = "imageList";
+    private ArrayList<ImageItem> imageArrayList;
     private OnFragmentInteractionListener mListener;
 
-    public static MainActivityFolderFragment newInstance(ArrayList<ImageItem> folderArrayList) {
-        MainActivityFolderFragment fragment = new MainActivityFolderFragment();
+    public static MainActivityImageFragment newInstance(ArrayList<ImageItem> imageArrayList) {
+        MainActivityImageFragment fragment = new MainActivityImageFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_LIST, folderArrayList);
+        args.putParcelableArrayList(ARG_LIST, imageArrayList);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MainActivityFolderFragment() {
+    public MainActivityImageFragment() {
         // Required empty public constructor
     }
 
@@ -47,12 +47,12 @@ public class MainActivityFolderFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main_activity_folder, container, false);
-        if (getArguments() != null)
-            this.folderArrayList = getArguments().getParcelableArrayList(ARG_LIST);
-        if(this.folderArrayList != null)
-            setListAdapter(new ListViewAdapter<>(getActivity(), R.layout.list_item, this.folderArrayList));
-
+        View view = inflater.inflate(R.layout.fragment_main_activity_image, container, false);
+        if (getArguments() != null) {
+            this.imageArrayList = getArguments().getParcelableArrayList(ARG_LIST);
+            GridView gridView = (GridView) view.findViewById(R.id.grid);
+            gridView.setAdapter(new GridViewAdapter<>(getActivity(), R.layout.grid_item, this.imageArrayList));
+        }
         return view;
     }
 
@@ -65,11 +65,6 @@ public class MainActivityFolderFragment extends ListFragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        mListener.onFolderSelected(folderArrayList.get(position).getName());
     }
 
     @Override
@@ -89,7 +84,7 @@ public class MainActivityFolderFragment extends ListFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFolderSelected(String folderName);
+        //void onImageSelected(int position);
     }
 
 }
