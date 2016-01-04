@@ -25,9 +25,8 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                HuffDatabase huffDatabase = HuffDatabase.getInstance(SplashScreen.this);
-
                 // Update database with new images
+                HuffDatabase huffDatabase = HuffDatabase.getInstance(SplashScreen.this);
                 Uri uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
                 String[] projection = {MediaStore.Images.Media.TITLE, MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
                 Cursor cursor = SplashScreen.this.getContentResolver().query(uri, projection, "", null, null);
