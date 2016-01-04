@@ -1,9 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:orientation="vertical"
-tools:context="com.example.juice500.mockupbird.SplashScreen"
-android:weightSum="1">
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="com.example.juice500.mockupbird.SplashScreen"
+    android:screenOrientation="portrait"
+    android:weightSum="1">
 
 <TextView android:text="@string/app_name" android:layout_width="fill_parent"
     android:layout_height="match_parent"
