@@ -50,7 +50,11 @@ public class GridViewAdapter<T> extends ArrayAdapter<T> {
         if(item.getClass() == ImageItem.class) {
             ImageItem imageItem = (ImageItem) item;
             holder.imageTitle.setText(imageItem.getName());
-            Glide.with(this.context).load(imageItem.getPath()).into(holder.image);
+            if(imageItem.getIsHuff() != 0)
+                Glide.with(this.context).load(imageItem.getPath()).into(holder.image);
+            else {
+                // IF HUFF
+            }
         }
 
         return row;
