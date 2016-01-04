@@ -1,6 +1,9 @@
 package com.example.juice500.huffpuff;
 
-public class ImageItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ImageItem implements Parcelable {
     private String name;
     private String path;
     private int isHuff;
@@ -9,6 +12,31 @@ public class ImageItem {
         this.name = name;
         this.path = path;
         this.isHuff = isHuff;
+    }
+
+    ImageItem(Parcel parcel) {
+        this.name = parcel.readString();
+        this.path = parcel.readString();
+        this.isHuff = parcel.readInt();
+    }
+
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(name);
+        parcel.writeString(path);
+        parcel.writeInt(isHuff);
+    }
+
+    public static final Parcelable.Creator<ImageItem> CREATOR = new Parcelable.Creator<ImageItem>() {
+        public ImageItem createFromParcel(Parcel parcel) {
+            return new ImageItem(parcel);
+        }
+        public ImageItem[] newArray(int size) {
+            return new ImageItem[size];
+        }
+    };
+
+    public int describeContents() {
+        return 0;
     }
 
     String getName() {
