@@ -2,6 +2,8 @@ package com.example.juice500.huffpuff;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 
 /**
@@ -33,6 +42,7 @@ public class MainActivitySingleFragment extends Fragment {
     private Button buttonModify;
     private ImageView imageView;
     private ImageView iconView;
+    private PhotoViewAttacher photoViewAttacher;
 
     public static MainActivitySingleFragment newInstance(String imagePath, boolean isHuff) {
         MainActivitySingleFragment fragment = new MainActivitySingleFragment();
@@ -67,7 +77,17 @@ public class MainActivitySingleFragment extends Fragment {
         this.imageView = (ImageView) view.findViewById(R.id.imageView);
         this.iconView = (ImageView) view.findViewById(R.id.iconView);
 
-        Glide.with(MainActivitySingleFragment.this).load(imagePath).asBitmap().into(this.imageView);
+        Glide.with(MainActivitySingleFragment.this).load(imagePath).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                photoViewAttacher = new PhotoViewAttacher(imageView);
+                return false;
+            }
+        }).into(imageView);
 
         return view;
     }
