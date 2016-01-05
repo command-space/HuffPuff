@@ -4,10 +4,12 @@
     android:orientation="vertical"
     tools:context="com.example.juice500.mockupbird.SplashScreen"
     android:screenOrientation="portrait"
+    android:background="#254061"
     android:weightSum="1">
 
-<TextView android:text="@string/app_name" android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical|center_horizontal"
-    android:textSize="25dp" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splash"
+        android:scaleType="fitCenter" />
 </LinearLayout>
