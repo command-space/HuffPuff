@@ -1,7 +1,9 @@
 package com.example.juice500.huffpuff;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -59,6 +61,29 @@ public class MainActivityImageFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                     ImageItem imageItem = imageArrayList.get(position);
                     mListener.onImageSelected(imageItem.getPath(), imageItem.getIsHuff() != 0);
+                }
+            });
+            gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("폴더 압축");
+                    builder.setMessage("폴더를 압축하시겠습니까?");
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+                    builder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("압축", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    builder.show();
+                    return true;
                 }
             });
         }
