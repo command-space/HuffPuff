@@ -51,7 +51,7 @@ public class ListViewAdapter<T> extends ArrayAdapter<T> {
         if(item.getClass() == ImageItem.class) {
             ImageItem imageItem = (ImageItem) item;
             holder.imageTitle.setText(imageItem.getName());
-            if(imageItem.getIsHuff() != 0)
+            if(imageItem.getIsHuff() == 0)
                 Glide.with(this.context).load(imageItem.getPath()).into(holder.image);
             else {
                 // IF HUFF
