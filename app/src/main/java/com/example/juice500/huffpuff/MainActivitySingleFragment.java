@@ -34,7 +34,9 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class MainActivitySingleFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_IMAGE = "imagePath";
+    private static final String ARG_NAME = "imageName";
     private static final String ARG_HUFF = "isHuff";
+    private String imageName;
     private String imagePath;
     private boolean isHuff;
     private OnFragmentInteractionListener mListener;
@@ -44,9 +46,10 @@ public class MainActivitySingleFragment extends Fragment {
     private ImageView iconView;
     private PhotoViewAttacher photoViewAttacher;
 
-    public static MainActivitySingleFragment newInstance(String imagePath, boolean isHuff) {
+    public static MainActivitySingleFragment newInstance(String imageName, String imagePath, boolean isHuff) {
         MainActivitySingleFragment fragment = new MainActivitySingleFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_NAME, imageName);
         args.putString(ARG_IMAGE, imagePath);
         args.putBoolean(ARG_HUFF, isHuff);
         fragment.setArguments(args);
@@ -61,6 +64,7 @@ public class MainActivitySingleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            this.imageName = getArguments().getString(ARG_NAME);
             this.imagePath = getArguments().getString(ARG_IMAGE);
             this.isHuff = getArguments().getBoolean(ARG_HUFF);
         }
@@ -72,6 +76,7 @@ public class MainActivitySingleFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_activity_single, container, false);
 
+        (getActivity()).setTitle(this.imageName);
         this.buttonDelete = (Button) view.findViewById(R.id.buttonDelete);
         this.buttonModify = (Button) view.findViewById(R.id.buttonModify);
         this.imageView = (ImageView) view.findViewById(R.id.imageView);

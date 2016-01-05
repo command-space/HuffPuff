@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
     public void onFolderSelected(String folderName) {
         this.imageItems = this.huffDatabase.getImageList(folderName);
-        MainActivityImageFragment imageFragment = MainActivityImageFragment.newInstance(this.imageItems);
+        MainActivityImageFragment imageFragment = MainActivityImageFragment.newInstance(folderName, this.imageItems);
 
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.fade_out, android.R.anim.slide_in_left, android.R.anim.fade_out);
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-    public void onImageSelected(String imagePath, boolean isHuff) {
-        MainActivitySingleFragment singleFragment = MainActivitySingleFragment.newInstance(imagePath, isHuff);
+    public void onImageSelected(String imageName, String imagePath, boolean isHuff) {
+        MainActivitySingleFragment singleFragment = MainActivitySingleFragment.newInstance(imageName, imagePath, isHuff);
 
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.fade_out);

@@ -27,12 +27,15 @@ import java.util.ArrayList;
  */
 public class MainActivityImageFragment extends Fragment {
     private static final String ARG_LIST = "imageList";
+    private static final String ARG_NAME = "folderName";
+    private String folderName;
     private ArrayList<ImageItem> imageArrayList;
     private OnFragmentInteractionListener mListener;
 
-    public static MainActivityImageFragment newInstance(ArrayList<ImageItem> imageArrayList) {
+    public static MainActivityImageFragment newInstance(String folderName, ArrayList<ImageItem> imageArrayList) {
         MainActivityImageFragment fragment = new MainActivityImageFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_NAME, folderName);
         args.putParcelableArrayList(ARG_LIST, imageArrayList);
         fragment.setArguments(args);
         return fragment;
@@ -54,13 +57,15 @@ public class MainActivityImageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main_activity_image, container, false);
         if (getArguments() != null) {
             this.imageArrayList = getArguments().getParcelableArrayList(ARG_LIST);
+            this.folderName = getArguments().getString(ARG_NAME);
+            (getActivity()).setTitle(this.folderName);
             GridView gridView = (GridView) view.findViewById(R.id.grid);
             gridView.setAdapter(new GridViewAdapter<>(getActivity(), R.layout.grid_item, this.imageArrayList));
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                     ImageItem imageItem = imageArrayList.get(position);
-                    mListener.onImageSelected(imageItem.getPath(), imageItem.getIsHuff() != 0);
+                    mListener.onImageSelected(imageItem.getName(), imageItem.getPath(), imageItem.getIsHuff() != 0);
                 }
             });
             gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -118,7 +123,7 @@ public class MainActivityImageFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onImageSelected(String imagePath, boolean isHuff);
+        void onImageSelected(String imageName, String imagePath, boolean isHuff);
     }
 
 }

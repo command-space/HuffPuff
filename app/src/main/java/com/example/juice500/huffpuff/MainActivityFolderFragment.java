@@ -49,6 +49,7 @@ public class MainActivityFolderFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_activity_folder, container, false);
+        (getActivity()).setTitle("Album");
         if (getArguments() != null)
             this.folderArrayList = getArguments().getParcelableArrayList(ARG_LIST);
         if(this.folderArrayList != null)
