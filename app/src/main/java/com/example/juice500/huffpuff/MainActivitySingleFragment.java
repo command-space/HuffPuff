@@ -4,63 +4,70 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.Button;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MainActivityImageFragment.OnFragmentInteractionListener} interface
+ * {@link MainActivitySingleFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MainActivityImageFragment#newInstance} factory method to
+ * Use the {@link MainActivitySingleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainActivityImageFragment extends Fragment {
-    private static final String ARG_LIST = "imageList";
-    private ArrayList<ImageItem> imageArrayList;
+public class MainActivitySingleFragment extends Fragment {
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_IMAGE = "imagePath";
+    private static final String ARG_HUFF = "isHuff";
+    private String imagePath;
+    private boolean isHuff;
     private OnFragmentInteractionListener mListener;
+    private Button buttonDelete;
+    private Button buttonModify;
+    private ImageView imageView;
+    private ImageView iconView;
 
-    public static MainActivityImageFragment newInstance(ArrayList<ImageItem> imageArrayList) {
-        MainActivityImageFragment fragment = new MainActivityImageFragment();
+    public static MainActivitySingleFragment newInstance(String imagePath, boolean isHuff) {
+        MainActivitySingleFragment fragment = new MainActivitySingleFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_LIST, imageArrayList);
+        args.putString(ARG_IMAGE, imagePath);
+        args.putBoolean(ARG_HUFF, isHuff);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MainActivityImageFragment() {
+    public MainActivitySingleFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            this.imagePath = getArguments().getString(ARG_IMAGE);
+            this.isHuff = getArguments().getBoolean(ARG_HUFF);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main_activity_image, container, false);
-        if (getArguments() != null) {
-            this.imageArrayList = getArguments().getParcelableArrayList(ARG_LIST);
-            GridView gridView = (GridView) view.findViewById(R.id.grid);
-            gridView.setAdapter(new GridViewAdapter<>(getActivity(), R.layout.grid_item, this.imageArrayList));
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    ImageItem imageItem = imageArrayList.get(position);
-                    mListener.onImageSelected(imageItem.getPath(), imageItem.getIsHuff() != 0);
-                }
-            });
-        }
+        View view = inflater.inflate(R.layout.fragment_main_activity_single, container, false);
+
+        this.buttonDelete = (Button) view.findViewById(R.id.buttonDelete);
+        this.buttonModify = (Button) view.findViewById(R.id.buttonModify);
+        this.imageView = (ImageView) view.findViewById(R.id.imageView);
+        this.iconView = (ImageView) view.findViewById(R.id.iconView);
+
+        Glide.with(MainActivitySingleFragment.this).load(imagePath).asBitmap().into(this.imageView);
+
         return view;
     }
 
@@ -92,7 +99,7 @@ public class MainActivityImageFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onImageSelected(String imagePath, boolean isHuff);
+        //public void onFragmentInteraction(Uri uri);
     }
 
 }
