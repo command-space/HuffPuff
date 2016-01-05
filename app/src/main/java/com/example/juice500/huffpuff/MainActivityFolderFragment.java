@@ -1,6 +1,7 @@
 package com.example.juice500.huffpuff;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -57,12 +58,12 @@ public class MainActivityFolderFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnFragmentInteractionListener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(getActivity().toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
